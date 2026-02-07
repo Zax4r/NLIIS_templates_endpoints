@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from router import text
+from router import text, lemma
 from contextlib import asynccontextmanager
 from database import Base, engine
 
@@ -15,4 +15,5 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 app.include_router(text.router)
+app.include_router(lemma.router)
 
