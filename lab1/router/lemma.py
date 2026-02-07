@@ -3,20 +3,16 @@ from schemas.lemma import SLemmaAdd, SLemmaAddDb, SLemmaUpdate, SLemmaResponse
 from schemas.text import STextAdd, STextUpdate, STextResponse
 from fastapi import APIRouter, status, HTTPException, UploadFile, Request, Depends
 from repository import LemmaRepository, TextRepository
-from processing import DocReader
+from processers.processing import DocReader
+from dependencies import TextIdDep
 from typing import List
 
 router = APIRouter(prefix="/lemma", tags=["Леммы"])
 
 
-def get_text_id_from_cookie(request: Request):
-    text_id_cookie = request.cookies.get("current_text_id")
-    return int(text_id_cookie) if text_id_cookie else None
-
-
 @router.get("/", response_model=List[SLemmaResponse], status_code=status.HTTP_200_OK)
 async def get_all(
-    session: SessionDep, text_id: int | None = Depends(get_text_id_from_cookie)
+    session: SessionDep, text_id: TextIdDep
 ):
     if not text_id:
         return []
@@ -28,7 +24,7 @@ async def get_all(
 async def add_one(
     new_lemma: SLemmaAdd,
     session: SessionDep,
-    text_id: int | None = Depends(get_text_id_from_cookie),
+    text_id: TextIdDep,
 ):
     if not text_id:
         raise HTTPException(
@@ -47,3 +43,4 @@ async def add_one(
     )
     return lemma
 
+    

@@ -3,7 +3,7 @@ from schemas.lemma import SLemmaAdd, SLemmaUpdate, SLemmaResponse
 from schemas.text import STextAdd, STextUpdate, STextResponse
 from fastapi import APIRouter, status, HTTPException, UploadFile, Response
 from repository import LemmaRepository, TextRepository
-from processing import DocReader
+from processers.processing import DocReader
 
 router = APIRouter(prefix="/text", tags=["Тексты"])
 
@@ -26,4 +26,5 @@ async def add_text(new_text: UploadFile, session: SessionDep):
     all_words = await DocReader.read_doc(new_text.file)
     text_add = STextAdd(name=new_text.filename, text=all_words)
     text = await TextRepository.add_one(text_add, session)
+
     return text
