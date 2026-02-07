@@ -1,8 +1,10 @@
 from database import SessionDep
 from schemas.lemma import SLemmaAdd, SLemmaUpdate, SLemmaResponse
 from schemas.text import STextAdd, STextUpdate, STextResponse
-from fastapi import APIRouter, status, HTTPException
+from fastapi import APIRouter, status, HTTPException, UploadFile
 from repository import LemmaRepository, TextRepository
+from processing import DocReader
+
 
 router = APIRouter(prefix="/text", tags=["Тексты"])
 
@@ -17,7 +19,10 @@ async def get_text(id: int, session: SessionDep):
     return text
 
 @router.post('/add',response_model=STextResponse, status_code=status.HTTP_201_CREATED)
-async def add_text(new_text: STextAdd, session: SessionDep):
-    text = await TextRepository.add_one(new_text, session)
+async def add_text(new_text: UploadFile, session: SessionDep):
+    all_words = await DocReader.read_doc(new_text.file)
+    text_add = STextAdd(name=new_text.filename, text=all_words)
+    text = await TextRepository.add_one(text_add, session)
     return text
+    
 
