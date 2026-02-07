@@ -8,13 +8,13 @@ class SLemmaBase(BaseModel):
 
 
 class SLemmaAdd(SLemmaBase):
-    text_id: int = Field(..., ge=1)
     word: str
 
+class SLemmaAddDb(SLemmaAdd):
+    text_id: int = Field(...,ge=1)
 
 class SLemmaUpdate(SLemmaBase):
     pass
-
 
 class SLemmaResponse(SLemmaBase):
     id: int

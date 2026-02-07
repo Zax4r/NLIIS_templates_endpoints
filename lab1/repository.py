@@ -2,7 +2,7 @@ from database import SessionDep
 from models.text import Text
 from models.lemma import Lemma
 from sqlalchemy import select, delete
-from schemas.lemma import SLemmaAdd, SLemmaUpdate
+from schemas.lemma import SLemmaAddDb, SLemmaUpdate
 from schemas.text import STextAdd, STextUpdate
 
 
@@ -67,7 +67,7 @@ class LemmaRepository:
         return lemma
 
     @classmethod
-    async def add_one(cls, data: SLemmaAdd, session: SessionDep):
+    async def add_one(cls, data: SLemmaAddDb, session: SessionDep):
         data_dict = data.model_dump()
         lemma = Lemma(**data_dict)
         session.add(lemma)
