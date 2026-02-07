@@ -1,6 +1,7 @@
 import spacy
 import json
-from typing import List, Dict
+from typing import List, Dict, IO
+from docx import Document
 
 
 class JsonProcesser:
@@ -36,20 +37,9 @@ class Processer:
 
         return result_dict
 
-
-res = Processer.process(
-    """Lucas goes to school every day of the week. He has many subjects to go to each school day: English, art, science, mathematics, gym, and history. His mother packs a big backpack full of books and lunch for Lucas.
-
-His first class is English, and he likes that teacher very much. His English teacher says that he is a good pupil, which Lucas knows means that she thinks he is a good student.
-
-His next class is art. He draws on paper with crayons and pencils and sometimes uses a ruler. Lucas likes art. It is his favorite class.
-
-His third class is science. This class is very hard for Lucas to figure out, but he gets to work with his classmates a lot, which he likes to do. His friend, Kyle, works with Lucas in science class, and they have fun.
-
-Then Lucas gets his break for lunch. He sits with Kyle while he eats. The principal, or the headmaster as some call him, likes to walk around and talk to students during lunch to check that they are all behaving.""",
-    "dep_rules.json",
-    "morph_rules.json",
-)
-
-for w in res:
-    print(w)
+class DocReader:
+    @classmethod
+    async def read_doc(cls,file: IO[bytes]):
+        doc_file = Document(file)
+        merged_text = ' '.join([word.text for word in doc_file.paragraphs])
+        return merged_text
