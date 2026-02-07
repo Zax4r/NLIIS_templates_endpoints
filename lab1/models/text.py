@@ -9,6 +9,6 @@ class Text(Base):
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
     name: Mapped[str]
     text: Mapped[str]
-    date: Mapped[DateTime] = mapped_column(
+    date: Mapped[datetime] = mapped_column(
         init=False, default=datetime.now(), nullable=False
     )
