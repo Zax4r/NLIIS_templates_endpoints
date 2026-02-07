@@ -9,8 +9,8 @@ class STextBase(BaseModel):
     @field_validator("name")
     @classmethod
     def validate_filename(cls, v: str) -> str:
-        if not (v.endswith(".doc") or v.endswith(".docs")):
-            raise ValueError("Файл должен иметь расширение .doc или .docs")
+        if not (v.endswith(".doc") or v.endswith(".docx")):
+            raise ValueError("Файл должен иметь расширение .doc или .docx")
         return v
 
 
