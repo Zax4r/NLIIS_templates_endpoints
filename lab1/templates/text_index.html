@@ -1,0 +1,16 @@
+{% extends "/base.html" %}
+{% block content %}
+    <table class="table">
+    <thead>
+        <tr>
+            {% for text in texts %}
+                <th scope="col">{{text.name | upper }}, {{text.date.strftime('%Y-%m-%d %H:%M:%S')}}</th>
+            {% endfor %}
+            {% if texts %}
+            <th scope="col">DELETE</th>
+            <th scope="col">UPDATE</th>
+            {% endif %}
+        </tr>
+    </thead>
+</table>
+{% endblock %}
