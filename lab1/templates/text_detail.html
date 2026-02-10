@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Текст: {{ text.name }}{% endblock %}
+
+{% block content %}
+<h1>Текст: {{ text.name }}</h1>
+<p><strong>Дата загрузки:</strong> {{ text.date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+
+<div style="margin-bottom: 20px;">
+    <a href="/text/all" style="display: inline-block; padding: 5px 10px; background-color: #666; color: white; text-decoration: none; margin-right: 5px;">← Назад к списку</a>
+    <form action="/text/delete/{{ text.id }}" method="post" style="display: inline;">
+        <button type="submit" onclick="return confirm('Удалить этот текст?')" style="padding: 5px 10px; background-color: #f44336; color: white; border: none; cursor: pointer;">Удалить</button>
+    </form>
+</div>
+
+<div style="border: 1px solid #ccc; padding: 20px; background-color: #f9f9f9;">
+    <h2>Содержимое текста:</h2>
+    <pre style="white-space: pre-wrap; word-wrap: break-word;">{{ text.text }}</pre>
+</div>
+
+<div style="margin-top: 30px;">
+    <h2>Анализ текста (леммы):</h2>
+    <a href="/lemma/" style="display: inline-block; padding: 5px 10px; background-color: #4CAF50; color: white; text-decoration: none;">Показать леммы</a>
+</div>
+{% endblock %}
