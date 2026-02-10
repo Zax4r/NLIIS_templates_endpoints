@@ -86,7 +86,7 @@ async def add_one(
         SLemmaAddDb(
             lemma=lemma,
             morph=morph,
-            role=morph,
+            role=role,
             word=word,
             text_id=text_id,
         ),
