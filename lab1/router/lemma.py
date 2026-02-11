@@ -28,7 +28,7 @@ async def get_all(session: SessionDep, text_id: int, request: Request):
 
 
 @router.get("/filter", response_class=RedirectResponse)
-async def add_one(session: SessionDep, text_id: int, request: Request, morph: str):
+async def filter(session: SessionDep, text_id: int, request: Request, morph: str):
     lemmas = await LemmaRepository.filter(text_id, morph, session)
     current_text = await TextRepository.get_one(text_id, session)
     return templates.TemplateResponse(
@@ -41,6 +41,19 @@ async def add_one(session: SessionDep, text_id: int, request: Request, morph: st
         },
     )
 
+@router.get("/search", response_class=RedirectResponse)
+async def search(session: SessionDep, text_id: int, request: Request, word: str):
+    lemmas = await LemmaRepository.search(text_id, word, session)
+    current_text = await TextRepository.get_one(text_id, session)
+    return templates.TemplateResponse(
+        "lemma_index.html",
+        {
+            "request": request,
+            "lemmas": lemmas,
+            "text": current_text,
+            "text_id": text_id,
+        },
+    )
 
 @router.post("/add", response_class=RedirectResponse)
 async def add_one(
