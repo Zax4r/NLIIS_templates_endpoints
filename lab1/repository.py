@@ -103,12 +103,15 @@ class LemmaRepository:
             lemma.role = data_dict.get("role")
         await session.commit()
         return lemma
-    
+
     @classmethod
     async def filter(cls, text_id: int, morph: str, session: SessionDep):
         lemma_query = (
-            select(Lemma).where(Lemma.text_id == text_id).where(Lemma.morph == morph).order_by(Lemma.word.asc())
-        ) 
+            select(Lemma)
+            .where(Lemma.text_id == text_id)
+            .where(Lemma.morph == morph)
+            .order_by(Lemma.word.asc())
+        )
         lemma_result = await session.execute(lemma_query)
         lemma = lemma_result.scalars().all()
         return lemma
