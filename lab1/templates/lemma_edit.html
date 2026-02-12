@@ -5,28 +5,36 @@
 {% block content %}
 <h1>Редактирование леммы</h1>
 
-<p><strong>Текущее слово:</strong> {{ lemma.word }}</p>
-
-<form action="/lemma/update/{{ lemma.id }}" method="post">
+{% if lemma and text_id %}
+    <p><strong>Слово:</strong> {{ lemma.word }}</p>
     
-    <div style="margin-bottom: 15px;">
-        <label for="lemma"><strong>Лемма:</strong></label><br>
-        <input type="text" id="lemma" name="lemma" value="{{ lemma.lemma }}" style="width: 100%; padding: 8px; margin-top: 5px;" required>
-    </div>
-    
-    <div style="margin-bottom: 15px;">
-        <label for="morph"><strong>Морфология:</strong></label><br>
-        <input type="text" id="morph" name="morph" value="{{ lemma.morph }}" style="width: 100%; padding: 8px; margin-top: 5px;" required>
-    </div>
-    
-    <div style="margin-bottom: 15px;">
-        <label for="role"><strong>Роль:</strong></label><br>
-        <input type="text" id="role" name="role" value="{{ lemma.role }}" style="width: 100%; padding: 8px; margin-top: 5px;" required>
-    </div>
-    
-    <div>
-        <button type="submit" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">Сохранить изменения</button>
-        <a href="/lemma/" style="padding: 10px 20px; background-color: #666; color: white; text-decoration: none; margin-left: 10px;">Отмена</a>
-    </div>
-</form>
+    <form action="/text/{{ text_id }}/lemma/update/{{ lemma.id }}" method="post">
+        <div style="margin-bottom: 15px;">
+            <label for="lemma"><strong>Лемма:</strong></label><br>
+            <input type="text" id="lemma" name="lemma" value="{{ lemma.lemma }}" style="width: 100%; padding: 8px; margin-top: 5px;" required>
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <label for="morph"><strong>Морфология:</strong></label><br>
+            <input type="text" id="morph" name="morph" value="{{ lemma.morph }}" style="width: 100%; padding: 8px; margin-top: 5px;" required>
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <label for="role"><strong>Роль:</strong></label><br>
+            <input type="text" id="role" name="role" value="{{ lemma.role }}" style="width: 100%; padding: 8px; margin-top: 5px;" required>
+        </div>
+        
+        <div>
+            <button type="submit" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
+                Сохранить изменения
+            </button>
+            <a href="/text/{{ text_id }}/lemma/" style="padding: 10px 20px; background-color: #666; color: white; text-decoration: none; margin-left: 10px;">
+                Отмена
+            </a>
+        </div>
+    </form>
+{% else %}
+    <p style="color: #f44336;">Ошибка: не указан ID текста или леммы</p>
+    <a href="/text/all">Вернуться к списку текстов</a>
+{% endif %}
 {% endblock %}

@@ -26,7 +26,6 @@ async def get_all(session: SessionDep, request: Request):
 async def delete_one(id: int, session: SessionDep, response: Response):
     await TextRepository.delete_one(id, session)
     await LemmaRepository.delete_all(id, session)
-    response.set_cookie(key="current_text_id", value="")
 
     return RedirectResponse("/text/all", status_code=status.HTTP_303_SEE_OTHER)
 
@@ -53,8 +52,6 @@ async def get_text(id: int, session: SessionDep, response: Response, request: Re
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"Text with id {id} not found"
         )
-
-    response.set_cookie(key="current_text_id", value=str(text.id))
 
     return templates.TemplateResponse(
         "text_detail.html", {"request": request, "text": text}

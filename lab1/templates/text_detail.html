@@ -4,6 +4,7 @@
 
 {% block content %}
 <h1>Текст: {{ text.name }}</h1>
+<p><strong>ID текста:</strong> {{ text.id }}</p>
 <p><strong>Дата загрузки:</strong> {{ text.date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
 
 <div style="margin-bottom: 20px;">
@@ -20,6 +21,8 @@
 
 <div style="margin-top: 30px;">
     <h2>Анализ текста (леммы):</h2>
-    <a href="/lemma/" style="display: inline-block; padding: 5px 10px; background-color: #4CAF50; color: white; text-decoration: none;">Показать леммы</a>
+    <a href="/text/{{ text.id }}/lemma/" style="display: inline-block; padding: 5px 10px; background-color: #4CAF50; color: white; text-decoration: none;">
+        Показать леммы этого текста
+    </a>
 </div>
 {% endblock %}
