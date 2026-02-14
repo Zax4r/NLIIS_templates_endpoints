@@ -4,6 +4,7 @@ from models.lemma import Lemma
 from sqlalchemy import select, delete
 from schemas.lemma import SLemmaAddDb, SLemmaUpdate
 from schemas.text import STextAdd, STextUpdate
+import sqlalchemy
 
 
 class TextRepository:
@@ -72,11 +73,25 @@ class LemmaRepository:
     @classmethod
     async def add_one(cls, data: SLemmaAddDb, session: SessionDep):
         data_dict = data.model_dump()
+
+        existing_lemma_query = select(Lemma).where(
+            Lemma.text_id == data_dict["text_id"],
+            Lemma.lemma == data_dict["lemma"],
+            Lemma.morph == data_dict["morph"],
+            Lemma.role == data_dict["role"]
+        )
+        existing_lemma_result = await session.execute(existing_lemma_query)
+        existing_lemma = existing_lemma_result.scalar_one_or_none()
+        
+        if existing_lemma:
+            return existing_lemma
+        
         lemma = Lemma(**data_dict)
         session.add(lemma)
         await session.commit()
         await session.refresh(lemma)
         return lemma
+
 
     @classmethod
     async def delete_one(cls, id: int, session: SessionDep):

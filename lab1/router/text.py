@@ -8,6 +8,7 @@ from typing import List
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 
+
 router = APIRouter(prefix="/text", tags=["Тексты"])
 
 templates = Jinja2Templates(directory="templates")
